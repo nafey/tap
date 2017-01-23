@@ -26,23 +26,27 @@ public class BackgroundBehaviour : MonoBehaviour {
     }
 
 	void Update () {
-        // Move the Background
-        GameObject current_bg = this.bg[selected_bg];
-        GameObject other_bg = this.bg[getOther(selected_bg)];
+        bool tick_dead = this.tick.GetComponent<TickBehaviour>().isDead;
 
-        if (this.tick.transform.position.y - current_bg.transform.position.y > bgJumpSize / 4) {
-            selected_bg = getOther(selected_bg);
-        } else if (this.tick.transform.position.y - current_bg.transform.position.y > upper_limit) {
-            if (other_bg.transform.position.y < current_bg.transform.position.y) {
-                other_bg.transform.Translate(0f, this.bgJumpSize, 0f);
+        if (!tick_dead) {
+            // Move the Background
+            GameObject current_bg = this.bg[selected_bg];
+            GameObject other_bg = this.bg[getOther(selected_bg)];
+
+            if (this.tick.transform.position.y - current_bg.transform.position.y > bgJumpSize / 4) {
+                selected_bg = getOther(selected_bg);
+            } else if (this.tick.transform.position.y - current_bg.transform.position.y > upper_limit) {
+                if (other_bg.transform.position.y < current_bg.transform.position.y) {
+                    other_bg.transform.Translate(0f, this.bgJumpSize, 0f);
+                }
+            } else if (this.tick.transform.position.y - current_bg.transform.position.y < -1 * bgJumpSize / 4) {
+                selected_bg = getOther(selected_bg);
+            } else if (this.tick.transform.position.y - current_bg.transform.position.y < lower_limit) {
+                if (other_bg.transform.position.y > current_bg.transform.position.y) {
+                    other_bg.transform.Translate(0f, -this.bgJumpSize, 0f);
+                }
             }
-        } else if (this.tick.transform.position.y - current_bg.transform.position.y < -1 * bgJumpSize / 4) {
-            selected_bg = getOther(selected_bg);
-        } else if (this.tick.transform.position.y - current_bg.transform.position.y < lower_limit) {
-            if (other_bg.transform.position.y > current_bg.transform.position.y) {
-                other_bg.transform.Translate(0f, -this.bgJumpSize, 0f);
-            }
-        } 
+        }
 
 
 

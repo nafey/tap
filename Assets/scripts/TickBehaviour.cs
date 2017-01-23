@@ -1,22 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TickBehaviour : MonoBehaviour {
-    private Plane[] planes;
-    
+    public GameObject deathLine;
 
-    public bool isDead = false;
     // when tick dies set is dead flag
-    
+    public bool isDead = false;
+
     void Start() {
-        planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
     }
 
-
     void Update() {
-        if (!GeometryUtility.TestPlanesAABB(planes, this.GetComponent<Collider2D>().bounds)) {
-            this.isDead = true;
+        if (this.transform.position.y < this.deathLine.transform.position.y) {
+            isDead = true;
+            this.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         }
     }
 }
