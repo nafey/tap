@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameBehaviour : MonoBehaviour {
     public float forceMultiplier;
+    public float forceMax;
+
     public GameObject tick;
     
 
@@ -32,6 +34,10 @@ public class GameBehaviour : MonoBehaviour {
 
             Debug.DrawLine(Camera.main.ScreenToWorldPoint(Input.mousePosition), tick.transform.position, Color.red, 2f);
            
+            if (adjusted_force.magnitude > forceMax) {
+                adjusted_force = adjusted_force * (forceMax / adjusted_force.magnitude);
+            }
+
             tick.GetComponent<Rigidbody2D>().AddForce(adjusted_force);
         }
 	}

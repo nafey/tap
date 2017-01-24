@@ -1,18 +1,27 @@
 ﻿using UnityEngine;
 
 public class TickBehaviour : MonoBehaviour {
-    public GameObject deathLine;
 
     // when tick dies set is dead flag
     public bool isDead = false;
+    public float maxSpeed = 10f;
 
-    void Start() {
-    }
+    public float tickRadiusOffset = 1f;
+    public GameObject deathLine;
+    
 
     void Update() {
+        Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D>();
+        // Takes care of death
         if (this.transform.position.y < this.deathLine.transform.position.y) {
             isDead = true;
-            this.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
+        // Max the speed
+        if (rigidbody.velocity.magnitude > maxSpeed) {
+            rigidbody.velocity = (rigidbody.velocity * this.maxSpeed) / rigidbody.velocity.magnitude;
         }
     }
+    
 }
