@@ -23,5 +23,9 @@ public class TickBehaviour : MonoBehaviour {
             rigidbody.velocity = (rigidbody.velocity * this.maxSpeed) / rigidbody.velocity.magnitude;
         }
     }
+
+    public void Launch() {
+        this.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
     
 }
