@@ -8,7 +8,13 @@ public class TickBehaviour : MonoBehaviour {
 
     public float tickRadiusOffset = 1f;
     public GameObject deathLine;
-    
+
+    public Vector3 start;
+
+    void Start() {
+        Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D>();
+        rigidbody.velocity = start;
+    }
 
     void Update() {
         Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D>();
