@@ -9,12 +9,7 @@ public class TickBehaviour : MonoBehaviour {
     public float tickRadiusOffset = 1f;
     public GameObject deathLine;
 
-    public Vector3 start;
-
-    void Start() {
-        Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D>();
-        rigidbody.velocity = start;
-    }
+    public Vector3 startVelocity;
 
     void Update() {
         Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D>();
@@ -32,6 +27,9 @@ public class TickBehaviour : MonoBehaviour {
 
     public void Launch() {
         this.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D>();
+        rigidbody.velocity = startVelocity;
     }
     
 }
