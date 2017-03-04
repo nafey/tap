@@ -27,23 +27,20 @@ public class Support {
     }
 
     public static Vector3[] computeTrajectory(Vector3 startVelocity, float acceleration, 
-        Vector3 origin, float bound) {
+        Vector3 origin, float timeBound) {
         int size = 10;
         Vector3[] ret = new Vector3[size];
 
         float vy = startVelocity.y;
         float vx = startVelocity.x;
 
-        float timeToFall = vy / acceleration;
-        float timeToBoundary = (bound - origin.x) / vx;
-
-        
+        float timeToTop = vy / acceleration;        
         float timeMax = float.MaxValue;
 
-        if (timeToFall > timeToBoundary) {
-            timeMax = timeToBoundary;
+        if (timeToTop > 0 && timeToTop < timeBound) {
+            timeMax = timeToTop;
         } else {
-            timeMax = timeToFall;
+            timeMax = timeBound;
         }
         
         for (int i = 0; i < size; i++) {
@@ -73,9 +70,9 @@ public class Support {
             Vector3 perp2 = Vector3.Cross(line, zneg);
             perp2 = (perp2 * size) / (2 * perp2.magnitude);
 
-            Vector3 p1 = end + perp1;
+            Vector3 p1 = start + perp2;
             Vector3 p2 = end + perp2;
-            Vector3 p3 = start + perp2;
+            Vector3 p3 = end + perp1;
             Vector3 p4 = start + perp1;
 
             Quad q = new Quad(p1, p2, p3, p4);
@@ -84,5 +81,6 @@ public class Support {
 
         return quads;
     }
+
 }
 
