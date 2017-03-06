@@ -16,7 +16,7 @@ public class Segment  {
         }
     }
 
-    public float slope() {
+    public float Slope() {
         return (end.y - start.y) / (end.x - start.y);
     }
 
@@ -25,5 +25,52 @@ public class Segment  {
         this.start = start;
     }
 
-    
+    public Line GetLine() {
+        return new Line(this);
+    }
+
+    public bool IsOnSegment(Vector3 point) {
+        Line l = this.GetLine();
+        if (l.IsOnLine(point)) {
+            float dist1 = Mathf.Abs(point.x - this.Start.x);
+            float dist2 = Mathf.Abs(point.x - this.End.x);
+            float dist = Mathf.Abs(this.Start.x - this.End.x);
+
+            return (dist1 < dist) && (dist2 < dist);
+        } else {
+            return false;
+        }
+    }
+
+    public bool Intersects(Line l) {
+        Line me = this.GetLine();
+
+        if (me.Intersects(l)) {
+            Vector3 p = me.Intersection(l);
+            if (this.IsOnSegment(p)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool Intersects(Segment s) {
+        Line l = s.GetLine();
+
+        if (this.Intersects(l)) {
+            Vector3 point = this.Intersection(l);
+            return s.IsOnSegment(point);
+        }
+
+        return false;
+    }
+
+    public Vector3 Intersection(Line l) {
+        return this.GetLine().Intersection(l);
+    }
+
+    public Vector3 Intersection(Segment s) {
+        return this.Intersection(s.GetLine());
+    }
 }

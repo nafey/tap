@@ -136,7 +136,7 @@ public class ArrowBehaviour : MonoBehaviour {
 
                     
                     if (coll.GetType() == typeof(BoxCollider2D) && coll.tag != "Player") {
-                        BoxCollider2D box = (BoxCollider2D) coll;
+                        //  BoxCollider2D box = (BoxCollider2D) coll;
                         
                         
                     }

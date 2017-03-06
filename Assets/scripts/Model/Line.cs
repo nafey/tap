@@ -22,6 +22,32 @@ public class Line{
     }
 
     public Line (Segment segment) {
-        float slope = (segment.End.y - segment.Start.y) / (segment.End.x - segment.Start.x);
+        if (segment.End.x == segment.Start.y) {
+            this.slope = float.PositiveInfinity;
+            this.intercept = float.PositiveInfinity;
+        } else {
+            this.slope = (segment.End.y - segment.Start.y) / (segment.End.x - segment.Start.x);
+            this.intercept = segment.Start.y - slope * segment.Start.x;
+        }
+    }
+
+    public bool IsOnLine(Vector3 point) {
+        return (slope * point.x - intercept - point.y == 0);
+    }
+
+    public bool Intersects(Line l) {
+        return !(l.slope == this.slope);
+    }
+
+    public Vector3 Intersection(Line l) {
+        Vector3 ret = new Vector3(0, 0);
+
+        float x = (l.Intercept - this.Intercept) / (this.Slope - l.Slope);
+        float y = (l.Slope * this.Intercept - this.Slope * l.Intercept) / (l.Slope - this.Slope);
+
+        ret.x = x;
+        ret.y = y;
+
+        return ret;
     }
 }
