@@ -21,6 +21,11 @@ public class Line{
         this.intercept = intercept;
     }
 
+    public Line(float slope, Vector3 point) {
+        this.slope = slope;
+        this.intercept = point.y - slope * point.x;
+    }
+
     public Line (Segment segment) {
         if (segment.End.x == segment.Start.y) {
             this.slope = float.PositiveInfinity;
@@ -49,5 +54,14 @@ public class Line{
         ret.y = y;
 
         return ret;
+    }
+
+    public float Distance(Vector3 point) {
+        float perpSlope = -1f / this.Slope;
+
+        Line perp = new Line(perpSlope, point);
+        Vector3 intersection = this.Intersection(perp);
+
+        return Vector3.Distance(point, intersection);
     }
 }
