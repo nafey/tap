@@ -5,6 +5,7 @@ using UnityEngine;
 public class Circle {
     private Vector3 origin;
     private float radius;
+    private float tolerance = 0.0001f;
 
     public Vector3 Origin {
         get {
@@ -63,5 +64,25 @@ public class Circle {
         }
 
         return intersections;
+    }
+
+    public List<Vector3> Intersection(Segment s) {
+        List<Vector3> intersections = new List<Vector3>();
+        Line l = s.GetLine();
+        if (this.Intersects(l)) {
+            List<Vector3> lineIntersection = this.Intersection(l);
+
+            foreach (Vector3 point in lineIntersection) {
+                if (s.HasPoint(point)) {
+                    intersections.Add(point);
+                }
+            }
+        }
+
+        return intersections;
+    }
+
+    public bool HasPoint(Vector3 point) {
+        return ((Vector3.Distance(point, this.Origin) / Radius) < tolerance);
     }
 }

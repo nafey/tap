@@ -29,9 +29,9 @@ public class Segment  {
         return new Line(this);
     }
 
-    public bool IsOnSegment(Vector3 point) {
+    public bool HasPoint(Vector3 point) {
         Line l = this.GetLine();
-        if (l.IsOnLine(point)) {
+        if (l.HasPoint(point)) {
             float dist1 = Mathf.Abs(point.x - this.Start.x);
             float dist2 = Mathf.Abs(point.x - this.End.x);
             float dist = Mathf.Abs(this.Start.x - this.End.x);
@@ -47,7 +47,7 @@ public class Segment  {
 
         if (me.Intersects(l)) {
             Vector3 p = me.Intersection(l);
-            if (this.IsOnSegment(p)) {
+            if (this.HasPoint(p)) {
                 return true;
             }
         }
@@ -60,7 +60,7 @@ public class Segment  {
 
         if (this.Intersects(l)) {
             Vector3 point = this.Intersection(l);
-            return s.IsOnSegment(point);
+            return s.HasPoint(point);
         }
 
         return false;

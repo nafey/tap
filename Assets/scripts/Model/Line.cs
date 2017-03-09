@@ -36,7 +36,7 @@ public class Line{
         }
     }
 
-    public bool IsOnLine(Vector3 point) {
+    public bool HasPoint(Vector3 point) {
         return (slope * point.x - intercept - point.y == 0);
     }
 
