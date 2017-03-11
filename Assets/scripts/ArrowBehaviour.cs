@@ -36,6 +36,13 @@ public class ArrowBehaviour : MonoBehaviour {
 
 
         this.redrawLine();
+
+        Line l = new Line(1, 1);
+        Segment s = new Segment(new Vector3(0, 4), new Vector3(4, 0));
+        Circle c = new Circle(new Vector3(0, 0), 4);
+        Arc a = new Arc(new Vector3(1, 1), 4, new Vector3(4, 0), new Vector3(0, 4));
+
+        Debug.Log(a.Intersection(l).Count);
     }
 
     public void Update() {
@@ -120,9 +127,9 @@ public class ArrowBehaviour : MonoBehaviour {
             float radian = Mathf.Atan(tan);
             float angle = 57.3f * radian;
 
-            if (i == 5) {
-                Debug.Log(q.ToString());
-            }
+            //if (i == 5) {
+            //    Debug.Log(q.ToString());
+            //}
 
             // angle
             Vector2 size = new Vector2(qx, qy);
@@ -132,7 +139,7 @@ public class ArrowBehaviour : MonoBehaviour {
             if (colls.Length > 0) {
                 foreach (Collider2D coll in colls) {
                     float collider_angle = coll.gameObject.transform.eulerAngles.z;
-                    Debug.Log(collider_angle);
+                    //Debug.Log(collider_angle);
 
                     
                     if (coll.GetType() == typeof(BoxCollider2D) && coll.tag != "Player") {

@@ -31,9 +31,11 @@ public class Arc {
         }
     }
 
-    public Arc(Vector3 origin, float radius) {
+    public Arc(Vector3 origin, float radius, Vector3 start, Vector3 end) {
         this.origin = origin;
         this.radius = radius;
+        this.start = start;
+        this.end = end;
     }
 
     public Circle GetCircle() {
@@ -70,8 +72,8 @@ public class Arc {
             List<Vector3> intersections = this.GetCircle().Intersection(l);
 
             foreach(Vector3 point in intersections) {
-                if (!this.HasPoint(point)) {
-                    return false;
+                if (this.HasPoint(point)) {
+                    return true;
                 }
             }
         } else {

@@ -83,6 +83,6 @@ public class Circle {
     }
 
     public bool HasPoint(Vector3 point) {
-        return ((Vector3.Distance(point, this.Origin) / Radius) < tolerance);
+        return (((Vector3.Distance(point, this.Origin) - Radius) / Radius) < tolerance);
     }
 }

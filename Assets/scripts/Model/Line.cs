@@ -27,7 +27,7 @@ public class Line{
     }
 
     public Line (Segment segment) {
-        if (segment.End.x == segment.Start.y) {
+        if (segment.End.x == segment.Start.x) {
             this.slope = float.PositiveInfinity;
             this.intercept = float.PositiveInfinity;
         } else {
@@ -37,7 +37,7 @@ public class Line{
     }
 
     public bool HasPoint(Vector3 point) {
-        return (slope * point.x - intercept - point.y == 0);
+        return (slope * point.x + intercept - point.y == 0);
     }
 
     public bool Intersects(Line l) {
