@@ -11,8 +11,6 @@ public class ArrowBehaviour : MonoBehaviour {
 
     private Vector3 start;
     private float accel;
-    
-    
 
     public void Start() {
         start = tick.GetComponent<TickBehaviour>().startVelocity;
@@ -26,28 +24,36 @@ public class ArrowBehaviour : MonoBehaviour {
 
         Vector3 current = new Vector3(0, 0, 0);
 
-        for (int j = 0; j < cy; j++) {
-            for (int i = 0; i < cx; i++) {
-                current = origin + new Vector3(i * x, j * y, 0f);
+        //for (int j = 0; j < cy; j++) {
+        //    for (int i = 0; i < cx; i++) {
+        //        current = origin + new Vector3(i * x, j * y, 0f);
 
-                GameObject.Instantiate(block, current, Quaternion.identity, holder.transform);
-            }
-        }
+        //        GameObject.Instantiate(block, current, Quaternion.identity, holder.transform);
+        //    }
+        //}
 
         this.redrawLine();
 
         Line l = new Line(1, 1);
         Segment s = new Segment(new Vector3(0, 4), new Vector3(4, 0));
         Circle c = new Circle(new Vector3(0, 0), 4);
-        Arc a = new Arc(new Vector3(1, 1), 4, new Vector3(0, 4), new Vector3(-4, 0));
+        Arc a = new Arc(new Vector3(0, 0), 1, new Vector3(0, 1), new Vector3(-1, 0));
+
+        List<Vector3> traj = a.GetTrajectory();
+        //for (int i = 1; i < traj.Count; i++) {
+        //    Debug.DrawLine(traj[i - 1], traj[i], Color.cyan, 1000);
+        //}
+
+        //Debug.DrawLine(new Vector3(0, 0), new Vector3(1, 0), Color.cyan, 1000);
+        //Debug.DrawLine(new Vector3(0, 0), new Vector3(0, 1), Color.cyan, 1000);
 
         Segment s1 = new Segment(new Vector3(0, 6), new Vector3(8, 0));
-        Debug.DrawLine(s1.Start, s1.End, Color.magenta, 100);
+        // Debug.DrawLine(s1.Start, s1.End, Color.magenta, 100);
 
-        Segment s2 = s1.GetParallel(5, new Vector3(6, 8));
-        Debug.DrawLine(s2.Start, s2.End, Color.magenta, 100);
+        Segment s2 = s1.GetParallel(5);
+        // Debug.DrawLine(s2.Start, s2.End, Color.magenta, 100);
 
-        Debug.Log(s2.Start + " " + s2.End);
+        //Debug.Log(s2.Start + " " + s2.End);
     }
 
     public void Update() {
@@ -132,9 +138,12 @@ public class ArrowBehaviour : MonoBehaviour {
             float radian = Mathf.Atan(tan);
             float angle = 57.3f * radian;
 
-            //if (i == 5) {
-            //    Debug.Log(q.ToString());
-            //}
+            
+            if (i == 2) {
+                Border b = new Border(q, 0.1f);
+                b.Draw();
+                //Debug.Log(q.ToString());
+            }
 
             // angle
             Vector2 size = new Vector2(qx, qy);
@@ -145,12 +154,8 @@ public class ArrowBehaviour : MonoBehaviour {
                 foreach (Collider2D coll in colls) {
                     float collider_angle = coll.gameObject.transform.eulerAngles.z;
                     //Debug.Log(collider_angle);
-
-                    
                     if (coll.GetType() == typeof(BoxCollider2D) && coll.tag != "Player") {
                         //  BoxCollider2D box = (BoxCollider2D) coll;
-                        
-                        
                     }
                 }
             }

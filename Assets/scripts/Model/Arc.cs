@@ -111,4 +111,19 @@ public class Arc {
 
         return ret;
     }
+
+    public List<Vector3> GetTrajectory() {
+        List<Vector3> list = new List<Vector3>();
+        Vector3 current = this.Start - this.Origin;
+
+        float angle = Vector3.Angle(this.Start - this.Origin, this.End - this.Origin);
+        for (float w = 0; w < angle; w = w + 5f) {
+            list.Add(current + this.Origin);
+            current = Quaternion.Euler(0, 0, 5) * current;
+        }
+
+        list.Add(this.End);
+
+        return list;
+    }
 }

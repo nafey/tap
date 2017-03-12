@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Quad {
     private Vector3[] verts;
     private Vector3 center;
-
 
     public Vector3[] Verts {
         get {

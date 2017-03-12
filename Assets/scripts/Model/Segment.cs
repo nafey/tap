@@ -76,21 +76,23 @@ public class Segment  {
         return this.Intersection(s.GetLine());
     }
 
-    public Segment GetParallel(float margin, Vector3 opposite) {
-        // For start
+    public Segment GetParallel(float margin) {
         Line l1 = new Line(-1f / this.Slope(), this.Start);
+        Line l2 = new Line(-1f / this.Slope(), this.End);
+
         float cos = Mathf.Pow(1 + l1.Slope * l1.Slope, -0.5f);
         Vector3 s1 = new Vector3(this.Start.x + margin * cos, l1.Slope * (this.Start.x + margin * cos) + l1.Intercept);
         Vector3 s2 = new Vector3(this.Start.x - margin * cos, l1.Slope * (this.Start.x - margin * cos) + l1.Intercept);
 
-        Line l2 = new Line(-1f / this.Slope(), this.End);
-        Vector3 e1 = new Vector3(this.End.x + margin * cos, l1.Slope * (this.End.x + margin * cos) + l2.Intercept);
-        Vector3 e2 = new Vector3(this.End.x - margin * cos, l1.Slope * (this.End.x - margin * cos) + l2.Intercept);
+        float sign1 = Vector3.Dot(Vector3.Cross(s1 - this.Start, this.End - this.Start), new Vector3(0, 0, 1));
+        float sign2 = Vector3.Dot(Vector3.Cross(s2 - this.Start, this.End - this.Start), new Vector3(0, 0, 1));
 
-        if (Vector3.Distance(opposite, s1) < Vector3.Distance(opposite, s2)) {
-            return new Segment(s2, e2);
+        if (sign1 < sign2) {
+            Vector3 end = new Vector3(this.End.x + margin * cos, l1.Slope * (this.End.x + margin * cos) + l2.Intercept);
+            return new Segment(s1, end);
         } else {
-            return new Segment(s1, e1);
+            Vector3 end = new Vector3(this.End.x - margin * cos, l1.Slope * (this.End.x - margin * cos) + l2.Intercept);
+            return new Segment(s2, end);
         }
     }
 }
