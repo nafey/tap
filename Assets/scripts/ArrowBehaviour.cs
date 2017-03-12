@@ -34,15 +34,20 @@ public class ArrowBehaviour : MonoBehaviour {
             }
         }
 
-
         this.redrawLine();
 
         Line l = new Line(1, 1);
         Segment s = new Segment(new Vector3(0, 4), new Vector3(4, 0));
         Circle c = new Circle(new Vector3(0, 0), 4);
-        Arc a = new Arc(new Vector3(1, 1), 4, new Vector3(4, 0), new Vector3(0, 4));
+        Arc a = new Arc(new Vector3(1, 1), 4, new Vector3(0, 4), new Vector3(-4, 0));
 
-        Debug.Log(a.Intersection(l).Count);
+        Segment s1 = new Segment(new Vector3(0, 6), new Vector3(8, 0));
+        Debug.DrawLine(s1.Start, s1.End, Color.magenta, 100);
+
+        Segment s2 = s1.GetParallel(5, new Vector3(6, 8));
+        Debug.DrawLine(s2.Start, s2.End, Color.magenta, 100);
+
+        Debug.Log(s2.Start + " " + s2.End);
     }
 
     public void Update() {
