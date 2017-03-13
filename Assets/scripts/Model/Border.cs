@@ -38,11 +38,11 @@ public class Border {
         }
 
         foreach (Arc a in arcs) {
-            List<Vector3> traj = a.GetTrajectory();
+            List<Segment> segments = a.GetTrajectory();
 
-            for (int i = 1; i < traj.Count; i++) {
-                Vector3 start = traj[i - 1];
-                Vector3 end = traj[i];
+            for (int i = 0; i < segments.Count; i++) {
+                Vector3 start = segments[i].Start;
+                Vector3 end = segments[i].End;
 
                 Debug.DrawLine(start, end, Color.cyan, 1000);
             }

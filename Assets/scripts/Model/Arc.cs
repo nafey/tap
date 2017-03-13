@@ -6,7 +6,7 @@ public class Arc {
     private Vector3 end;
     private Vector3 origin;
     private float radius;
-    private List<Vector3> trajectory;
+    private List<Segment> trajectory;
 
     public Vector3 Origin {
         get {
@@ -32,13 +32,13 @@ public class Arc {
         }
     }
 
-    public Arc(float radius, Vector3 start, Vector3 end, int resolution = 3) {
+    public Arc(float radius, Vector3 start, Vector3 end, int resolution = 8) {
         //this.origin = origin;
         this.radius = radius;
         this.start = start;
         this.end = end;
 
-        this.trajectory = new List<Vector3>();
+        this.trajectory = new List<Segment>();
 
         Vector3 mid = (start + end) / 2;
         float mid_length = (mid - this.Start).magnitude; 
@@ -70,20 +70,31 @@ public class Arc {
         float angle = Vector3.Angle(this.start - this.origin, this.end - this.origin);
         float quanta = angle / resolution;
 
+        Vector3 last = this.Start - this.Origin;
         Vector3 current = this.Start - this.Origin;
 
         for (float i = 0; i < resolution; i++) {
-            this.trajectory.Add(current + this.Origin);
+            
             current = Quaternion.Euler(0, 0, quanta_sign * quanta) * current;
+            this.trajectory.Add(new Segment(last + this.origin, current + this.origin));
+            last = Quaternion.Euler(0, 0, quanta_sign * quanta) * last;
         }
 
-        this.trajectory.Add(this.end);
+        //this.trajectory.Add(new Segment(current + this.origin, this.end));
 
         //list.Add(this.End);
     }
 
     public Circle GetCircle() {
         return new Circle(origin, radius);
+    }
+
+    public List<Vector3> Intersection(Line l) {
+        List<Vector3> ret = new List<Vector3>();
+
+        
+
+        return ret;
     }
     //} 
 
@@ -157,7 +168,7 @@ public class Arc {
     //    return ret;
     //}
 
-    public List<Vector3> GetTrajectory() {
+    public List<Segment> GetTrajectory() {
         return this.trajectory;
     }
 
