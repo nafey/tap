@@ -26,10 +26,10 @@ public class Border {
         segments.Add(s3.GetParallel(thickness));
         segments.Add(s4.GetParallel(thickness));
 
-        arcs.Add(new Arc(q.Verts[0], thickness, segments[0].End, segments[1].Start));
-        arcs.Add(new Arc(q.Verts[1], thickness, segments[1].End, segments[2].Start));
-        arcs.Add(new Arc(q.Verts[2], thickness, segments[2].End, segments[3].Start));
-        arcs.Add(new Arc(q.Verts[3], thickness, segments[3].End, segments[0].Start));
+        arcs.Add(new Arc(thickness, segments[0].End, segments[1].Start));
+        arcs.Add(new Arc(thickness, segments[1].End, segments[2].Start));
+        arcs.Add(new Arc(thickness, segments[2].End, segments[3].Start));
+        arcs.Add(new Arc(thickness, segments[3].End, segments[0].Start));
     }
 
     public void Draw() {
@@ -46,8 +46,7 @@ public class Border {
 
                 Debug.DrawLine(start, end, Color.cyan, 1000);
             }
-
-            return;
+            
         }
     }
 }
