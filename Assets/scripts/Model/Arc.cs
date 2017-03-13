@@ -84,77 +84,78 @@ public class Arc {
 
     public Circle GetCircle() {
         return new Circle(origin, radius);
-    } 
-
-    public bool HasPoint(Vector3 point) {
-        if (this.GetCircle().HasPoint(point)) {
-            float theta12 = Geometry.Angle(start, end);
-            float theta1 = Geometry.Angle(start, point - origin);
-
-            if (theta12 > 0) {
-                if (theta1 > 0) {
-                    if (theta1 < theta12) {
-                        return true;
-                    }
-                } 
-            } else {
-                if (theta1 > 0) {
-                    return true;
-                } else {
-                    if (theta1 < theta12) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
     }
+    //} 
 
-    public bool Intersects(Line l) {
-        if (this.GetCircle().Intersects(l)) {
-            List<Vector3> intersections = this.GetCircle().Intersection(l);
+    //public bool HasPoint(Vector3 point) {
+    //    if (this.GetCircle().HasPoint(point)) {
+    //        float theta12 = Geometry.Angle(start, end);
+    //        float theta1 = Geometry.Angle(start, point - origin);
 
-            foreach(Vector3 point in intersections) {
-                if (this.HasPoint(point)) {
-                    return true;
-                }
-            }
-        } else {
-            return false;
-        }
+    //        if (theta12 > 0) {
+    //            if (theta1 > 0) {
+    //                if (theta1 < theta12) {
+    //                    return true;
+    //                }
+    //            } 
+    //        } else {
+    //            if (theta1 > 0) {
+    //                return true;
+    //            } else {
+    //                if (theta1 < theta12) {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //    }
 
-        return true;
-    }
+    //    return false;
+    //}
 
-    public List<Vector3> Intersection(Line l) {
-        List<Vector3> ret = new List<Vector3>();
-        if (this.Intersects(l)) {
-            List<Vector3> intersections = this.GetCircle().Intersection(l);
+    //public bool Intersects(Line l) {
+    //    if (this.GetCircle().Intersects(l)) {
+    //        List<Vector3> intersections = this.GetCircle().Intersection(l);
 
-            foreach(Vector3 point in intersections) {
-                if (this.HasPoint(point)) {
-                    ret.Add(point);
-                }
-            }
-        }
+    //        foreach(Vector3 point in intersections) {
+    //            if (this.HasPoint(point)) {
+    //                return true;
+    //            }
+    //        }
+    //    } else {
+    //        return false;
+    //    }
 
-        return ret;
-    }
+    //    return true;
+    //}
 
-    public List<Vector3> Intersection(Segment s) {
-        List<Vector3> ret = new List<Vector3>();
+    //public List<Vector3> Intersection(Line l) {
+    //    List<Vector3> ret = new List<Vector3>();
+    //    if (this.Intersects(l)) {
+    //        List<Vector3> intersections = this.GetCircle().Intersection(l);
 
-        List<Vector3> lineIntersections = this.Intersection(s.GetLine());
+    //        foreach(Vector3 point in intersections) {
+    //            if (this.HasPoint(point)) {
+    //                ret.Add(point);
+    //            }
+    //        }
+    //    }
 
-        foreach (Vector3 point in lineIntersections) {
-            if (this.HasPoint(point)) {
-                ret.Add(point);
-            }
-        }
+    //    return ret;
+    //}
 
-        return ret;
-    }
+    //public List<Vector3> Intersection(Segment s) {
+    //    List<Vector3> ret = new List<Vector3>();
+
+    //    List<Vector3> lineIntersections = this.Intersection(s.GetLine());
+
+    //    foreach (Vector3 point in lineIntersections) {
+    //        if (this.HasPoint(point)) {
+    //            ret.Add(point);
+    //        }
+    //    }
+
+    //    return ret;
+    //}
 
     public List<Vector3> GetTrajectory() {
         return this.trajectory;

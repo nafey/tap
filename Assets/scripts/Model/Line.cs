@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Line{
     private float slope;
@@ -40,18 +41,15 @@ public class Line{
         return (slope * point.x + intercept - point.y == 0);
     }
 
-    public bool Intersects(Line l) {
-        return !(l.slope == this.slope);
-    }
+    public List<Vector3> Intersection(Line l) {
+        List<Vector3> ret = new List<Vector3>();
 
-    public Vector3 Intersection(Line l) {
-        Vector3 ret = new Vector3(0, 0);
+        if (this.Slope != l.Slope) {
+            float x = (l.Intercept - this.Intercept) / (this.Slope - l.Slope);
+            float y = (l.Slope * this.Intercept - this.Slope * l.Intercept) / (l.Slope - this.Slope);
 
-        float x = (l.Intercept - this.Intercept) / (this.Slope - l.Slope);
-        float y = (l.Slope * this.Intercept - this.Slope * l.Intercept) / (l.Slope - this.Slope);
-
-        ret.x = x;
-        ret.y = y;
+            ret.Add(new Vector3(x, y));
+        }
 
         return ret;
     }
@@ -60,8 +58,8 @@ public class Line{
         float perpSlope = -1f / this.Slope;
 
         Line perp = new Line(perpSlope, point);
-        Vector3 intersection = this.Intersection(perp);
-
-        return Vector3.Distance(point, intersection);
+        List<Vector3> intersection = this.Intersection(perp);
+            
+        return Vector3.Distance(point, intersection[0]);
     }
 }

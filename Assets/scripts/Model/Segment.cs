@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Segment  {
     private Vector3 start;
@@ -44,55 +45,35 @@ public class Segment  {
         }
     }
 
-    public bool Intersects(Line l) {
-        Line me = this.GetLine();
+    public List<Vector3> Intersection(Line l) {
+        List<Vector3> ret = new List<Vector3>();
 
-        if (me.Intersects(l)) {
-            Vector3 p = me.Intersection(l);
-            if (this.HasPoint(p)) {
-                return true;
+        List<Vector3> lineIntersection = this.GetLine().Intersection(l);
+
+        foreach (Vector3 point in lineIntersection) {
+            if (this.HasPoint(point)) {
+                ret.Add(point);
             }
         }
 
-        return false;
+        return ret;
     }
 
-    public bool Intersects(Segment s) {
-        Line l = s.GetLine();
+    public List<Vector3> Intersection(Segment s) {
+        List<Vector3> ret = new List<Vector3>();
 
-        if (this.Intersects(l)) {
-            Vector3 point = this.Intersection(l);
-            return s.HasPoint(point);
+        Line other = s.GetLine();
+
+        List<Vector3> lineIntersection = this.Intersection(other);
+
+        foreach(Vector3 point in lineIntersection) {
+            if (s.HasPoint(point)) {
+                ret.Add(point);
+            }
         }
 
-        return false;
+        return ret;
     }
 
-    public Vector3 Intersection(Line l) {
-        return this.GetLine().Intersection(l);
-    }
-
-    public Vector3 Intersection(Segment s) {
-        return this.Intersection(s.GetLine());
-    }
-
-    public Segment GetParallel(float margin) {
-        Line l1 = new Line(-1f / this.Slope(), this.Start);
-        Line l2 = new Line(-1f / this.Slope(), this.End);
-
-        float cos = Mathf.Pow(1 + l1.Slope * l1.Slope, -0.5f);
-        Vector3 s1 = new Vector3(this.Start.x + margin * cos, l1.Slope * (this.Start.x + margin * cos) + l1.Intercept);
-        Vector3 s2 = new Vector3(this.Start.x - margin * cos, l1.Slope * (this.Start.x - margin * cos) + l1.Intercept);
-
-        float sign1 = Vector3.Dot(Vector3.Cross(s1 - this.Start, this.End - this.Start), new Vector3(0, 0, 1));
-        float sign2 = Vector3.Dot(Vector3.Cross(s2 - this.Start, this.End - this.Start), new Vector3(0, 0, 1));
-
-        if (sign1 < sign2) {
-            Vector3 end = new Vector3(this.End.x + margin * cos, l1.Slope * (this.End.x + margin * cos) + l2.Intercept);
-            return new Segment(s1, end);
-        } else {
-            Vector3 end = new Vector3(this.End.x - margin * cos, l1.Slope * (this.End.x - margin * cos) + l2.Intercept);
-            return new Segment(s2, end);
-        }
-    }
+    
 }

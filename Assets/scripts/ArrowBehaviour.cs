@@ -19,10 +19,6 @@ public class ArrowBehaviour : MonoBehaviour {
         this.redrawLine();
     }
 
-    public void Update() {
-
-    }
-
     public void redrawLine() {
         float time = 3600f;
         Vector3[] trajectory = Support.computeTrajectory(start, accel,
