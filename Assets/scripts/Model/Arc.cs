@@ -32,7 +32,7 @@ public class Arc {
         }
     }
 
-    public Arc(float radius, Vector3 start, Vector3 end, int resolution = 8) {
+    public Arc(float radius, Vector3 start, Vector3 end, int segments = 3) {
         //this.origin = origin;
         this.radius = radius;
         this.start = start;
@@ -58,31 +58,24 @@ public class Arc {
 
         float sign = Vector3.Dot(Vector3.Cross(this.End - mid, s1 - mid), new Vector3(0, 0, 1f));
 
-        int quanta_sign = -1;
         if (sign < 0) {
             this.origin = s1;
         } else {
             this.origin = s2;
-            quanta_sign = -1;
         }
 
         // make trajectory with 2 points
         float angle = Vector3.Angle(this.start - this.origin, this.end - this.origin);
-        float quanta = angle / resolution;
+        float quanta = angle / segments;
 
         Vector3 last = this.Start - this.Origin;
         Vector3 current = this.Start - this.Origin;
 
-        for (float i = 0; i < resolution; i++) {
-            
-            current = Quaternion.Euler(0, 0, quanta_sign * quanta) * current;
+        for (float i = 0; i < segments; i++) {
+            current = Quaternion.Euler(0, 0, -quanta) * current;
             this.trajectory.Add(new Segment(last + this.origin, current + this.origin));
-            last = Quaternion.Euler(0, 0, quanta_sign * quanta) * last;
+            last = Quaternion.Euler(0, 0, -quanta) * last;
         }
-
-        //this.trajectory.Add(new Segment(current + this.origin, this.end));
-
-        //list.Add(this.End);
     }
 
     public Circle GetCircle() {
@@ -91,99 +84,33 @@ public class Arc {
 
     public List<Vector3> Intersection(Line l) {
         List<Vector3> ret = new List<Vector3>();
+        foreach (Segment seg in this.trajectory) {
+            List<Vector3> intersections = seg.Intersection(l);
 
-        
+            foreach (Vector3 point in intersections) {
+                ret.Add(point);
+            }
+        }
 
         return ret;
     }
-    //} 
 
-    //public bool HasPoint(Vector3 point) {
-    //    if (this.GetCircle().HasPoint(point)) {
-    //        float theta12 = Geometry.Angle(start, end);
-    //        float theta1 = Geometry.Angle(start, point - origin);
+    public List<Vector3> Intersection(Segment s) {
+        List<Vector3> ret = new List<Vector3>();
 
-    //        if (theta12 > 0) {
-    //            if (theta1 > 0) {
-    //                if (theta1 < theta12) {
-    //                    return true;
-    //                }
-    //            } 
-    //        } else {
-    //            if (theta1 > 0) {
-    //                return true;
-    //            } else {
-    //                if (theta1 < theta12) {
-    //                    return true;
-    //                }
-    //            }
-    //        }
-    //    }
+        foreach (Segment seg in this.trajectory) {
+            List<Vector3> intersections = seg.Intersection(s);
+            
+            foreach (Vector3 point in intersections) {
+                ret.Add(point);
+            }
+        }
 
-    //    return false;
-    //}
-
-    //public bool Intersects(Line l) {
-    //    if (this.GetCircle().Intersects(l)) {
-    //        List<Vector3> intersections = this.GetCircle().Intersection(l);
-
-    //        foreach(Vector3 point in intersections) {
-    //            if (this.HasPoint(point)) {
-    //                return true;
-    //            }
-    //        }
-    //    } else {
-    //        return false;
-    //    }
-
-    //    return true;
-    //}
-
-    //public List<Vector3> Intersection(Line l) {
-    //    List<Vector3> ret = new List<Vector3>();
-    //    if (this.Intersects(l)) {
-    //        List<Vector3> intersections = this.GetCircle().Intersection(l);
-
-    //        foreach(Vector3 point in intersections) {
-    //            if (this.HasPoint(point)) {
-    //                ret.Add(point);
-    //            }
-    //        }
-    //    }
-
-    //    return ret;
-    //}
-
-    //public List<Vector3> Intersection(Segment s) {
-    //    List<Vector3> ret = new List<Vector3>();
-
-    //    List<Vector3> lineIntersections = this.Intersection(s.GetLine());
-
-    //    foreach (Vector3 point in lineIntersections) {
-    //        if (this.HasPoint(point)) {
-    //            ret.Add(point);
-    //        }
-    //    }
-
-    //    return ret;
-    //}
+        return ret;
+    }
 
     public List<Segment> GetTrajectory() {
         return this.trajectory;
     }
-
-    //public List<Vector3> GetTrajectory() {
-    //    List<Vector3> list = new List<Vector3>();
-    //    Vector3 current = this.Start - this.Origin;
-
-    //    float angle = Vector3.Angle(this.Start - this.Origin, this.End - this.Origin);
-    //    for (float w = 0; w < angle; w = w + 5f) {
-    //        list.Add(current + this.Origin);
-    //        current = Quaternion.Euler(0, 0, 5) * current;
-    //    }
-
-    //    list.Add(this.End);
-
-    //    return list;
-    //}
+    
 }
