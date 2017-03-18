@@ -35,11 +35,19 @@ public class Segment  {
     public bool HasPoint(Vector3 point) {
         Line l = this.GetLine();
         if (l.HasPoint(point)) {
-            float dist1 = Mathf.Abs(point.x - this.Start.x);
-            float dist2 = Mathf.Abs(point.x - this.End.x);
-            float dist = Mathf.Abs(this.Start.x - this.End.x);
+            if (l.Slope == float.PositiveInfinity) {
+                float dist1 = Mathf.Abs(point.y - this.start.y);
+                float dist2 = Mathf.Abs(point.y - this.end.y);
+                float dist = Mathf.Abs(this.start.y - this.end.y);
 
-            return (dist1 < dist) && (dist2 < dist);
+                return (dist1 <= dist) && (dist2 <= dist);
+            } else {
+                float dist1 = Mathf.Abs(point.x - this.Start.x);
+                float dist2 = Mathf.Abs(point.x - this.End.x);
+                float dist = Mathf.Abs(this.Start.x - this.End.x);
+
+                return (dist1 <= dist) && (dist2 <= dist);
+            }
         } else {
             return false;
         }

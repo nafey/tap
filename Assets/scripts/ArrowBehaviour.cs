@@ -16,15 +16,31 @@ public class ArrowBehaviour : MonoBehaviour {
         start = tick.GetComponent<TickBehaviour>().startVelocity;
         accel = tick.GetComponent<Rigidbody2D>().gravityScale;
 
-        this.redrawLine();
+        Quad q1 = new Quad(new Vector2(2, 2), new Vector3(1, 0), 0);
+        Support.DrawQuad(q1);
+
+        Quad q2 = new Quad(new Vector2(2, 2), new Vector3(0, 0), 45);
+        Support.DrawQuad(q2);
+
+        List<Vector3> list = q1.Intersections(q2);
+
+        Debug.Log(list.Count);
+
+        //Segment s1 = new Segment(new Vector3(-1, -1), new Vector3(1, -1));
+        //Segment s2 = new Segment(new Vector3(1.4f, 0), new Vector3(0, -1.4f));
+
+        //List<Vector3> list = s1.Intersection(s2);
+        //Debug.Log(list.Count);
+
+        //this.RedrawLine();
     }
 
-    public void redrawLine() {
+    public void RedrawLine() {
         float time = 3600f;
-        Vector3[] trajectory = Support.computeTrajectory(start, accel,
+        Vector3[] trajectory = Support.ComputeTrajectory(start, accel,
             tick.position, forecastPeriod);
 
-        Quad[] path = Support.computePath(trajectory, tick.GetComponent<CircleCollider2D>().radius * 2f);
+        Quad[] path = Support.ComputePath(trajectory, tick.GetComponent<CircleCollider2D>().radius * 2f);
 
         for (int i = 0; i < trajectory.Length - 1; i++) {
             Debug.DrawLine(trajectory[i], trajectory[i + 1], Color.magenta, time);
@@ -53,21 +69,28 @@ public class ArrowBehaviour : MonoBehaviour {
             float angle = 57.3f * radian;
 
             
-            if (i == 2) {
-                Border b = new Border(q, 0.1f);
-                b.Draw();
-                //Debug.Log(q.ToString());
-            }
+            //if (i == 2) {
+            //    Border b = new Border(q, 0.1f);
+            //    b.Draw();
+            //    //Debug.Log(q.ToString());.
+            //}
 
             // angle
-            Vector2 size = new Vector2(qx, qy);
 
-            Collider2D[] colls = Physics2D.OverlapBoxAll(q.GetCenter(), size, angle);
+            Collider2D[] colls = Physics2D.OverlapBoxAll(q.GetCenter(), new Vector2(qx, qy), angle);
             
             if (colls.Length > 0) {
                 foreach (Collider2D coll in colls) {
                     float collider_angle = coll.gameObject.transform.eulerAngles.z;
-                    //Debug.Log(collider_angle);
+                    Vector3 size = coll.bounds.size;
+                    Vector3 center = coll.bounds.center;
+
+                    Quad other = new Quad(size, center, collider_angle);
+                    
+                    if (other.Intersections(q).Count > 0) {
+                        Debug.Log("Intersections yo");
+                    }
+
                     if (coll.GetType() == typeof(BoxCollider2D) && coll.tag != "Player") {
                         //  BoxCollider2D box = (BoxCollider2D) coll;
                     }

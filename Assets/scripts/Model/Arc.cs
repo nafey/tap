@@ -47,15 +47,12 @@ public class Arc {
             return;
         }
 
-        float height = Mathf.Sqrt(this.radius * this.radius - mid_length * mid_length);
         Line l = new Line(-1f / new Segment(this.start, this.end).Slope(), mid);
         Circle c = new Circle(this.start, this.radius);
         List<Vector3> list = c.Intersection(l);
         Vector3 s1 = list[0];
         Vector3 s2 = list[1];
-
-        Debug.DrawLine(s1, s2, Color.magenta, 1000);
-
+        
         float sign = Vector3.Dot(Vector3.Cross(this.End - mid, s1 - mid), new Vector3(0, 0, 1f));
 
         if (sign < 0) {
@@ -112,5 +109,4 @@ public class Arc {
     public List<Segment> GetTrajectory() {
         return this.trajectory;
     }
-    
 }

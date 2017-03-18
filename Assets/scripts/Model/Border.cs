@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class Border {
-    private Quad q;
+    //private Quad q;
+    //private float thickness;
 
     private List<Segment> segments;
     private List<Arc> arcs;
-    private float thickness;
 
     public Border(Quad q, float thickness) {
-        this.q = q;
-        this.thickness = thickness;
+        //this.q = q;
+        //this.thickness = thickness;
 
         segments = new List<Segment>();
         arcs = new List<Arc>();
@@ -34,7 +33,7 @@ public class Border {
 
     public void Draw() {
         foreach (Segment s in segments) {
-            Debug.DrawLine(s.Start, s.End, Color.magenta, 100);
+            //Debug.DrawLine(s.Start, s.End, Color.magenta, 100);
         }
 
         foreach (Arc a in arcs) {
@@ -44,7 +43,7 @@ public class Border {
                 Vector3 start = segments[i].Start;
                 Vector3 end = segments[i].End;
 
-                Debug.DrawLine(start, end, Color.cyan, 1000);
+                //Debug.DrawLine(start, end, Color.cyan, 1000);
             }
             
         }
