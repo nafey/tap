@@ -16,6 +16,8 @@ public class TickBehaviour : MonoBehaviour {
     }
 
     void Update() {
+        //Debug.Log(this.gameObject.GetComponent<BoxCollider2D>().bounds.size);
+
         Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D>();
         // Takes care of death
         if (this.transform.position.y < this.deathLine.transform.position.y) {

@@ -11,12 +11,21 @@ public class Quad {
         }
     }
 
+    private Vector3 Rotate(Vector3 v, float angle) {
+        angle = Mathf.Deg2Rad* angle;
+        float x = v.x * Mathf.Cos(angle) - v.y * Mathf.Sin(angle);
+        float y = v.y * Mathf.Cos(angle) + v.x * Mathf.Sin(angle);
+
+        return new Vector3(x, y);
+    }
+
     public Quad(Vector3 size, Vector3 center, float rotation) {
+        //center += new Vector3(0.02f, 0.02f);
         this.verts = new Vector3[4];
-        Verts[0] = Quaternion.Euler(0, 0, rotation) * (new Vector3(-size.x / 2, -size.y / 2)) + center;
-        Verts[1] = Quaternion.Euler(0, 0, rotation) * (new Vector3(size.x / 2, -size.y / 2)) + center;
-        Verts[2] = Quaternion.Euler(0, 0, rotation) * (new Vector3(size.x / 2, size.y / 2)) + center;
-        Verts[3] = Quaternion.Euler(0, 0, rotation) * (new Vector3(-size.x / 2, size.y / 2)) + center;
+        Verts[0] = center + Rotate(new Vector3(-size.x / 2, -size.y / 2), rotation);
+        Verts[1] = center + Rotate(new Vector3(size.x / 2, -size.y / 2), rotation);
+        Verts[2] = center + Rotate(new Vector3(size.x / 2, size.y / 2), rotation);
+        Verts[3] = center + Rotate(new Vector3(-size.x / 2, size.y / 2), rotation);
     }
 
     public Quad(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {
@@ -72,6 +81,13 @@ public class Quad {
         }
 
         return ret;
+    }
+
+    public void Draw() {
+        Debug.DrawLine(this.Verts[0], this.Verts[1], Color.cyan, 1000);
+        Debug.DrawLine(this.Verts[1], this.Verts[2], Color.cyan, 1000);
+        Debug.DrawLine(this.Verts[2], this.Verts[3], Color.cyan, 1000);
+        Debug.DrawLine(this.Verts[3], this.Verts[0], Color.cyan, 1000);
     }
     
 }
