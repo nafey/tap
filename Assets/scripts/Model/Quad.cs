@@ -23,9 +23,9 @@ public class Quad {
         //center += new Vector3(0.02f, 0.02f);
         this.verts = new Vector3[4];
         Verts[0] = center + Rotate(new Vector3(-size.x / 2, -size.y / 2), rotation);
-        Verts[1] = center + Rotate(new Vector3(size.x / 2, -size.y / 2), rotation);
+        Verts[1] = center + Rotate(new Vector3(-size.x / 2, size.y / 2), rotation);
         Verts[2] = center + Rotate(new Vector3(size.x / 2, size.y / 2), rotation);
-        Verts[3] = center + Rotate(new Vector3(-size.x / 2, size.y / 2), rotation);
+        Verts[3] = center + Rotate(new Vector3(size.x / 2, -size.y / 2), rotation);
     }
 
     public Quad(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4) {

@@ -9,8 +9,18 @@ public class ArrowBehaviour : MonoBehaviour {
     public GameObject holder;
     public GameObject block;
 
+    public GameObject box;
+
     private Vector3 start;
     private float accel;
+
+    private Quad GetQuad(Collider2D coll) {
+        float collider_angle = coll.gameObject.transform.eulerAngles.z;
+        Vector3 size = coll.gameObject.GetComponent<BoxCollider2D>().size;
+        Vector3 center = coll.gameObject.GetComponent<BoxCollider2D>().bounds.center;
+
+        return new Quad(size, center, collider_angle);
+    }
 
     public void Start() {
         start = tick.GetComponent<TickBehaviour>().startVelocity;
@@ -32,6 +42,9 @@ public class ArrowBehaviour : MonoBehaviour {
         //List<Vector3> list = s1.Intersection(s2);
         //Debug.Log(list.Count);
 
+        //Quad q = this.GetQuad(box.GetComponent<Collider2D>());
+        //Border b = new Border(q, 0.08f);
+        //b.Draw();
 
         //Debug.DrawLine(new Vector2(0, 0), new Vector2(0.17f, 0), Color.red, 1000);
         this.RedrawLine();
@@ -52,11 +65,11 @@ public class ArrowBehaviour : MonoBehaviour {
             Debug.DrawLine(trajectory[i], trajectory[i + 1], Color.magenta, time);
         }
 
-        for (int i = 0; i < path.Length; i++) {
-            Quad q = path[i];
+        //for (int i = 0; i < path.Length; i++) {
+        //    Quad q = path[i];
 
-            //q.Draw();
-        }
+        //    q.Draw();
+        //}
 
         // Find the collision for path section
         for (int i = 0; i < path.Length; i++) {
@@ -71,45 +84,31 @@ public class ArrowBehaviour : MonoBehaviour {
             float radian = Mathf.Atan(tan);
             float angle = 57.3f * radian;
 
-            
-            //if (i == 2) {
-            //    Border b = new Border(q, 0.1f);
-            //    b.Draw();
-            //    //Debug.Log(q.ToString());.
-            //}
-
             // angle
-            Collider2D[] colls = Physics2D.OverlapBoxAll(q.GetCenter(), new Vector2(qx, qy), angle);
+            Collider2D[] colls = Physics2D.OverlapBoxAll(q.GetCenter(), new Vector2(qx, qy), angle, LayerMask.GetMask("Default"));
             
             foreach (Collider2D coll in colls) {
-                
-                //Debug.Log(coll.gameObject.name);
-                float collider_angle = coll.gameObject.transform.eulerAngles.z;
-                Vector3 size = coll.gameObject.GetComponent<BoxCollider2D>().size;
-                Vector3 center = coll.gameObject.GetComponent<BoxCollider2D>().bounds.center;
+                Quad coll_quad = this.GetQuad(coll);
 
-                //Debug.Log("Size " + size);
-                //Debug.Log("Center " + center);
-                //Debug.Log("Angle " + collider_angle);
+                Border b = new Border(coll_quad, 0.08f);
+                b.Draw();
 
-                Quad coll_quad = new Quad(size, center, collider_angle);
-                Debug.Log(size.x + " " + size.y);
-                coll_quad.Draw();
+                Line l = b.TrajectoryIntersection(trajectory);
+
+                Debug.DrawRay(l.ExamplePoint, this.DirFromSlope(l.Slope), Color.cyan, 1000);
+                return;
+
+                //List<Vector3> intersections //(trajectory[i]);
                 
-                //if (i == 4) {
-                //    List<Vector3> list = coll_quad.Intersections(q);
-                //    Debug.DrawLine(list[0], list[1], Color.red, 1000);
+                //if (intersections.Count > 0) {
+                //    //Debug.DrawLine(intersections[0], intersections[1], Color.red, 1000);
+                //    return;
                 //}
-
-                if (coll_quad.Intersections(q).Count > 0) {
-
-                }
-
-                if (coll.GetType() == typeof(BoxCollider2D) && coll.tag != "Player") {
-                    //  BoxCollider2D box = (BoxCollider2D) coll;
-                }
             }
         }
     }
 
+    private Vector3 DirFromSlope(float slope) {
+        return new Vector3(Mathf.Pow(1 + slope * slope, -0.5f), Mathf.Pow(1 + slope * slope, -0.5f) * slope);
+    }
 }

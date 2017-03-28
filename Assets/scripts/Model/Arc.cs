@@ -106,6 +106,26 @@ public class Arc {
         return ret;
     }
 
+    public Line ClosestIntersection(Segment s) {
+        float slope = float.NaN;
+        float dist = float.MaxValue;
+        Vector3 v = new Vector3(0, 0);
+
+        foreach (Segment seg in this.trajectory) {
+            List<Vector3> intersections = seg.Intersection(s);
+
+            foreach (Vector3 point in intersections) {
+                if (Vector3.Distance(s.Start, point) < dist) {
+                    v = point;
+                    slope = seg.Slope();
+                    dist = Vector3.Distance(s.Start, point);
+                }
+            }
+        }
+
+        return new global::Line(slope, v);
+    }
+
     public List<Segment> GetTrajectory() {
         return this.trajectory;
     }

@@ -19,6 +19,9 @@ public class Segment  {
     }
 
     public float Slope() {
+        if (this.End.x == this.Start.x) {
+            return float.PositiveInfinity;
+        }
         return (end.y - start.y) / (end.x - start.x);
     }
 

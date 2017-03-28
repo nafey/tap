@@ -19,6 +19,12 @@ public class Line{
         }
     }
 
+    public Vector3 ExamplePoint {
+        get {
+            return examplePoint;
+        }
+    }
+
     public Line(float slope, float intercept) {
         this.slope = slope;
         this.intercept = intercept;
