@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameBehaviour : MonoBehaviour {
@@ -16,7 +15,7 @@ public class GameBehaviour : MonoBehaviour {
        void Update() {
         if (Input.GetMouseButton(0)) {
             this.isDown = true;
-            Debug.DrawLine(Camera.main.ScreenToWorldPoint(Input.mousePosition), tick.transform.position, Color.red, 0.05f);
+            Debug.DrawLine(Camera.main.ScreenToWorldPoint(Input.mousePosition), tick.transform.position, Color.red, 0.001f);
 
             this.downPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
@@ -31,7 +30,7 @@ public class GameBehaviour : MonoBehaviour {
 
             Vector2 adjusted_force = inverse_force * forceMultiplier;
 
-            Debug.DrawLine(Camera.main.ScreenToWorldPoint(Input.mousePosition), tick.transform.position, Color.red, 2f);
+            //Debug.DrawLine(Camera.main.ScreenToWorldPoint(Input.mousePosition), tick.transform.position, Color.red, 2f);
            
             if (adjusted_force.magnitude > forceMax) {
                 adjusted_force = adjusted_force * (forceMax / adjusted_force.magnitude);
