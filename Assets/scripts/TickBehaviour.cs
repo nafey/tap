@@ -11,7 +11,6 @@ public class TickBehaviour : MonoBehaviour {
 
     public Vector3 startVelocity;
 
-
     void Update() {
         Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D>();
         // Takes care of death
