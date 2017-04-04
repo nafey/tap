@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class ArrowBehaviour : MonoBehaviour {
     public Transform tick;
     private Vector3 start;
@@ -18,26 +16,35 @@ public class ArrowBehaviour : MonoBehaviour {
         start = tick.GetComponent<TickBehaviour>().startVelocity;
         accel = tick.GetComponent<Rigidbody2D>().gravityScale;
 
-        this.redrawLine();
+        this.RedrawLine();
     }
 
-    public void redrawLine() {
-        Vector3[] trajectory = Support.computeTrajectory(start, accel, 
-            tick.position, 1.2f );
+    public void Update() {
+        if (this.active) {
+            Debug.DrawLine(Camera.main.ScreenToWorldPoint(Input.mousePosition), tick.transform.position, Color.red, 0.05f);
+        }
+    }
 
+    private void MouseDown(Vector3 mousePosition) {
+        this.active = true;
+        Debug.Log("Down");
+
+        //Vector3 downPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    private void MouseUp(Vector3 mousePosition) {
+        this.active = false;
+        Debug.Log("Up");
+    }
+
+    private void DrawTrajectory(Vector3[] trajectory) {
         for (int i = 0; i < trajectory.Length - 1; i++) {
             Debug.DrawLine(trajectory[i], trajectory[i + 1], Color.magenta, 10f);
         }
     }
 
-    private void MouseDown() {
-        this.active = true;
-        Debug.Log("Down");
-    }
-
-    private void MouseUp() {
-        this.active = false;
-        Debug.Log("Up");
+    private void RedrawLine() {
+        this.DrawTrajectory(Support.ComputeTrajectory(start, accel, tick.position, 1.2f));
     }
 
     //void Update() {

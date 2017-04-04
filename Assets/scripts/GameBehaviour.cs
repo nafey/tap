@@ -14,14 +14,14 @@ public class GameBehaviour : MonoBehaviour {
     //public bool isDown;
     //public Vector3 downPosition;
 
-    private Action mouseDownCallback;
-    private Action mouseUpCallback;
+    private Action<Vector3> mouseDownCallback;
+    private Action<Vector3> mouseUpCallback;
 
-    public void RegisterMouseDown(Action callback) {
+    public void RegisterMouseDown(Action<Vector3> callback) {
         mouseDownCallback += callback;
     }
 
-    public void RegisterMouseUp(Action callback) {
+    public void RegisterMouseUp(Action<Vector3> callback) {
         mouseUpCallback += callback;
     }
 
@@ -35,11 +35,11 @@ public class GameBehaviour : MonoBehaviour {
 
     public void Update() {
         if (Input.GetMouseButtonDown(0)) {
-            this.mouseDownCallback();
+            this.mouseDownCallback(Input.mousePosition);
         }
 
         if (Input.GetMouseButtonUp(0)) {
-            this.mouseUpCallback();
+            this.mouseUpCallback(Input.mousePosition);
         }
     }
 

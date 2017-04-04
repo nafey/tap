@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 
 public class Support {
-
     private static Support instance;
-
     private Support() {}
 
-    public static Support getInstance() {
+    public static Support GetInstance() {
         if (instance == null) {
             instance = new Support();
         }
@@ -14,7 +12,7 @@ public class Support {
         return instance;
     }
 
-    public static Vector3 computeVelocity(Vector3 normal, Vector3 velocity) {
+    public static Vector3 ComputeVelocity(Vector3 normal, Vector3 velocity) {
         Vector3 tangent = new Vector3(-normal.y, normal.x);
         float a = Vector3.Dot(velocity, normal);
         float b = Vector3.Dot(velocity, tangent);
@@ -22,11 +20,11 @@ public class Support {
         return a * normal + b * tangent;
     }
 
-    private static float computeHeight(float v0, float a, float time) {
+    private static float ComputeHeight(float v0, float a, float time) {
         return v0 * time - a * time * time / 2f;
     }
 
-    public static Vector3[] computeTrajectory(Vector3 startVelocity, float acceleration, 
+    public static Vector3[] ComputeTrajectory(Vector3 startVelocity, float acceleration, 
         Vector3 origin, float bound) {
         int size = 10;
         Vector3[] ret = new Vector3[size];
@@ -49,7 +47,7 @@ public class Support {
         for (int i = 0; i < size; i++) {
             float t = timeMax * (((float) i) / ((float) (size - 1f)));
             float x = vx * t;
-            float y = computeHeight(vy, acceleration, t);
+            float y = ComputeHeight(vy, acceleration, t);
 
             ret[i] = new Vector3(x, y) + origin;
         }
