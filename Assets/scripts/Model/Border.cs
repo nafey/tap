@@ -128,7 +128,9 @@ public class Border {
         return new Line(slope, pt);
     }
 
-    public Line TrajectoryIntersection(Vector3[] lst) {
+    public List<Line> TrajectoryIntersection(Vector3[] lst) {
+        List<Line> ret = new List<Line>();
+
         float slope = float.NaN;
         Vector3 pt = new Vector3(0, 0);
         for (int i = 0; i < lst.Length - 1; i++) {
@@ -136,10 +138,13 @@ public class Border {
             Line l = this.ClosestIntersection(seg);
 
             if (!float.IsNaN(l.Slope)) {
-                return l;
+                ret.Add(l);
+                ret.Add(seg.GetLine());
+
+                return ret;
             }
         }
 
-        return new Line(slope, pt);
+        return ret;
     }
 }

@@ -123,7 +123,7 @@ public class Arc {
             }
         }
 
-        return new global::Line(slope, v);
+        return new Line(slope, v);
     }
 
     public List<Segment> GetTrajectory() {
