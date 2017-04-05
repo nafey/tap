@@ -16,6 +16,7 @@ public class GameBehaviour : MonoBehaviour {
 
     private Action<Vector3> mouseDownCallback;
     private Action<Vector3> mouseUpCallback;
+    private Action<Vector3> mouseHoldCallback;
 
     public void RegisterMouseDown(Action<Vector3> callback) {
         mouseDownCallback += callback;
@@ -23,6 +24,10 @@ public class GameBehaviour : MonoBehaviour {
 
     public void RegisterMouseUp(Action<Vector3> callback) {
         mouseUpCallback += callback;
+    }
+
+    public void RegisterMouseHold(Action<Vector3> callback) {
+        mouseHoldCallback += callback;
     }
 
     void Awake() {
@@ -40,6 +45,10 @@ public class GameBehaviour : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(0)) {
             this.mouseUpCallback(Input.mousePosition);
+        }
+
+        if (Input.GetMouseButton(0)) {
+            this.mouseHoldCallback(Input.mousePosition);
         }
     }
 

@@ -12,6 +12,7 @@ public class ArrowBehaviour : MonoBehaviour {
     public void Start() {
         GameBehaviour.instance.RegisterMouseDown(MouseDown);
         GameBehaviour.instance.RegisterMouseUp(MouseUp);
+        GameBehaviour.instance.RegisterMouseHold(MouseHold);
 
         start = tick.GetComponent<TickBehaviour>().startVelocity;
         accel = tick.GetComponent<Rigidbody2D>().gravityScale;
@@ -19,7 +20,7 @@ public class ArrowBehaviour : MonoBehaviour {
         this.RedrawLine();
     }
 
-    public void Update() {
+    private void MouseHold(Vector3 mousePosition) {
         if (this.active) {
             Debug.DrawLine(Camera.main.ScreenToWorldPoint(Input.mousePosition), tick.transform.position, Color.red, 0.05f);
         }
