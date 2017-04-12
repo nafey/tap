@@ -54,5 +54,29 @@ public class Support {
         
         return ret;
     }
+
+    public static Vector3 ComputeForce(Vector3 tickPosition, Vector3 mousePosition, float forceMultiplier) {
+        Vector2 raw_force = tickPosition - mousePosition;
+        Vector2 raw_unit_force = raw_force / raw_force.magnitude;
+        Vector2 inverse_force = raw_unit_force / raw_force.magnitude;
+
+        Vector2 adjusted_force = inverse_force * forceMultiplier;
+
+        float forceMax = 1000;
+
+        if (adjusted_force.magnitude > forceMax) {
+            adjusted_force = adjusted_force * (forceMax / adjusted_force.magnitude);
+        }
+
+        return adjusted_force;
+    }
+
+    public static void DrawTrajectory(Vector3[] trajectory, float time = 0.02f) {
+        for (int i = 0; i < trajectory.Length - 1; i++) {
+            Debug.DrawLine(trajectory[i], trajectory[i + 1], Color.magenta, time);
+        }
+    }
+
+
 }
 

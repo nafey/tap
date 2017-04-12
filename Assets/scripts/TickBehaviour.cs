@@ -27,7 +27,19 @@ public class TickBehaviour : MonoBehaviour {
         }
     }
 
-    
+    void Start() {
+        GameBehaviour.instance.RegisterMouseUp(MouseUp);
+    }
+
+    private void MouseUp(Vector3 mousePosition) {
+        Vector3 adjustedForce = Support.ComputeForce(this.transform.position, Camera.main.ScreenToWorldPoint(mousePosition), this.ForceMultiplier);
+        Vector3[] traj = Support.ComputeTrajectory(adjustedForce, this.GetComponent<Rigidbody2D>().gravityScale, this.transform.position, 1.2f);
+        Support.DrawTrajectory(traj, 1f);
+
+        this.ApplyVelocity(adjustedForce);
+    }
+
+
 
     public void ApplyVelocity(Vector3 velocity) {
         this.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;

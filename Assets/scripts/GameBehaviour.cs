@@ -39,15 +39,15 @@ public class GameBehaviour : MonoBehaviour {
 
 
     public void Update() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && this.mouseDownCallback != null) {
             this.mouseDownCallback(Input.mousePosition);
         }
 
-        if (Input.GetMouseButtonUp(0)) {
+        if (Input.GetMouseButtonUp(0) && this.mouseUpCallback != null) {
             this.mouseUpCallback(Input.mousePosition);
         }
 
-        if (Input.GetMouseButton(0)) {
+        if (Input.GetMouseButton(0) && this.mouseHoldCallback != null) {
             this.mouseHoldCallback(Input.mousePosition);
         }
     }
