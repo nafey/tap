@@ -7,6 +7,8 @@ public class TickBehaviour : MonoBehaviour {
     public float maxSpeed = 10f;
 
     public float tickRadiusOffset = 1f;
+
+    public float ForceMultiplier = 2.5f;
     public GameObject deathLine;
 
     public Vector3 startVelocity;
@@ -25,11 +27,17 @@ public class TickBehaviour : MonoBehaviour {
         }
     }
 
-    public void Launch() {
+    
+
+    public void ApplyVelocity(Vector3 velocity) {
         this.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
 
         Rigidbody2D rigidbody = this.GetComponent<Rigidbody2D>();
-        rigidbody.velocity = startVelocity;
+        rigidbody.velocity = velocity;
     }
-    
+
+    public void Launch() {
+        this.ApplyVelocity(startVelocity);
+    }
+
 }

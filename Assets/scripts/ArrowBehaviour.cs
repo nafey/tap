@@ -8,7 +8,58 @@ public class ArrowBehaviour : MonoBehaviour {
     private float accel;
 
     private bool active = false;
-    
+
+
+    private Vector3 CalculateForce(Vector3 tickPosition, Vector3 mousePosition, float forceMultiplier) {
+        Vector2 raw_force = tickPosition - mousePosition;
+        Vector2 raw_unit_force = raw_force / raw_force.magnitude;
+        Vector2 inverse_force = raw_unit_force / raw_force.magnitude;
+
+        Vector2 adjusted_force = inverse_force * forceMultiplier;
+
+        float forceMax = 1000;
+
+        if (adjusted_force.magnitude > forceMax) {
+            adjusted_force = adjusted_force * (forceMax / adjusted_force.magnitude);
+        }
+
+        return adjusted_force;
+    }
+
+    private void MouseHold(Vector3 mousePosition) {
+        if (this.active) {
+            Vector3 adjustedForce = this.CalculateForce(tick.transform.position, Camera.main.ScreenToWorldPoint(mousePosition), tick.GetComponent<TickBehaviour>().ForceMultiplier);
+            Vector3[] traj = Support.ComputeTrajectory(adjustedForce, tick.GetComponent<Rigidbody2D>().gravityScale, tick.transform.position, 1.2f);
+            this.DrawTrajectory(traj);
+        }
+    }
+
+
+    private void MouseDown(Vector3 mousePosition) {
+        this.active = true;
+    }
+
+    private void MouseUp(Vector3 mousePosition) {
+        this.active = false;
+
+        Vector3 adjustedForce = this.CalculateForce(tick.transform.position, Camera.main.ScreenToWorldPoint(mousePosition), tick.GetComponent<TickBehaviour>().ForceMultiplier);
+        Vector3[] traj = Support.ComputeTrajectory(adjustedForce, tick.GetComponent<Rigidbody2D>().gravityScale, tick.transform.position, 1.2f);
+        this.DrawTrajectory(traj, 1f);
+
+        tick.GetComponent<TickBehaviour>().ApplyVelocity(adjustedForce);
+    }
+
+    private void DrawTrajectory(Vector3[] trajectory, float time = 0.02f) {
+        for (int i = 0; i < trajectory.Length - 1; i++) {
+            Debug.DrawLine(trajectory[i], trajectory[i + 1], Color.magenta, time);
+        }
+    }
+
+    private void RedrawLine() {
+        this.DrawTrajectory(Support.ComputeTrajectory(start, accel, tick.position, 1.2f));
+    }
+
+
     public void Start() {
         GameBehaviour.instance.RegisterMouseDown(MouseDown);
         GameBehaviour.instance.RegisterMouseUp(MouseUp);
@@ -18,34 +69,6 @@ public class ArrowBehaviour : MonoBehaviour {
         accel = tick.GetComponent<Rigidbody2D>().gravityScale;
 
         this.RedrawLine();
-    }
-
-    private void MouseHold(Vector3 mousePosition) {
-        if (this.active) {
-            Debug.DrawLine(Camera.main.ScreenToWorldPoint(Input.mousePosition), tick.transform.position, Color.red, 0.05f);
-        }
-    }
-
-    private void MouseDown(Vector3 mousePosition) {
-        this.active = true;
-        Debug.Log("Down");
-
-        //Vector3 downPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    }
-
-    private void MouseUp(Vector3 mousePosition) {
-        this.active = false;
-        Debug.Log("Up");
-    }
-
-    private void DrawTrajectory(Vector3[] trajectory) {
-        for (int i = 0; i < trajectory.Length - 1; i++) {
-            Debug.DrawLine(trajectory[i], trajectory[i + 1], Color.magenta, 10f);
-        }
-    }
-
-    private void RedrawLine() {
-        this.DrawTrajectory(Support.ComputeTrajectory(start, accel, tick.position, 1.2f));
     }
 
     //void Update() {
