@@ -33,7 +33,7 @@ public class TickBehaviour : MonoBehaviour {
 
     private void MouseUp(Vector3 mousePosition) {
         Vector3 adjustedForce = Support.ComputeForce(this.transform.position, Camera.main.ScreenToWorldPoint(mousePosition), this.ForceMultiplier);
-        Vector3[] traj = Support.ComputeTrajectory(adjustedForce, this.GetComponent<Rigidbody2D>().gravityScale, this.transform.position, 1.2f);
+        Vector3[] traj = Support.ComputeTrajectory(adjustedForce, this.GetComponent<Rigidbody2D>().gravityScale, this.transform.position);
         Support.DrawTrajectory(traj, 1f);
 
         this.ApplyVelocity(adjustedForce);

@@ -24,26 +24,17 @@ public class Support {
         return v0 * time - a * time * time / 2f;
     }
 
-    public static Vector3[] ComputeTrajectory(Vector3 startVelocity, float acceleration, 
-        Vector3 origin, float bound) {
+    public static Vector3[] ComputeTrajectory(Vector3 startVelocity, float acceleration, Vector3 origin) {
+        float projectionTime = 0.6f;
+
         int size = 10;
         Vector3[] ret = new Vector3[size];
 
         float vy = startVelocity.y;
         float vx = startVelocity.x;
-
-        float timeToFall = vy / acceleration;
-        float timeToBoundary = (bound - origin.x) / vx;
-
         
-        float timeMax = float.MaxValue;
+        float timeMax = projectionTime;
 
-        if (timeToFall > timeToBoundary) {
-            timeMax = timeToBoundary;
-        } else {
-            timeMax = timeToFall;
-        }
-        
         for (int i = 0; i < size; i++) {
             float t = timeMax * (((float) i) / ((float) (size - 1f)));
             float x = vx * t;
